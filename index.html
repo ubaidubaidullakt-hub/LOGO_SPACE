@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Portfolio | 30 Designs</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --card: #f8fafc;
+            --text: #0f172a;
+            --accent: #0088cc; /* Telegram Blue */
+            --border: #e2e8f0;
+            --overlay: rgba(0,0,0,0.85);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --accent: #38bdf8;
+            --border: #334155;
+            --overlay: rgba(0,0,0,0.95);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #theme-toggle {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 20px 40px;
+        }
+
+        h1 { font-size: 2.5rem; margin: 0; color: var(--accent); }
+        p { opacity: 0.7; margin-top: 10px; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .logo-box {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+            border: 1px solid var(--border);
+            cursor: zoom-in;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        /* Buy Section & DM Button */
+        .buy-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+        }
+
+        .buy-section h2 { margin-bottom: 10px; }
+
+        .dm-btn {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #0088cc; /* Official Telegram Color */
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .dm-btn:hover {
+            transform: scale(1.05);
+            background-color: #0077b5;
+        }
+
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--overlay);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+            padding: 20px;
+        }
+
+        #lightbox img {
+            max-width: 95%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+<nav>
+    <button id="theme-toggle">🌓 Switch Theme</button>
+</nav>
+
+<header>
+    <h1>Logo Portfolio</h1>
+    <p>30 Premium Designs. Click to enlarge.</p>
+</header>
+
+<div class="container">
+    <div class="gallery" id="portfolio"></div>
+</div>
+
+<section class="BUY-SECTION">
+    <h2>YOU WANT TO BUY LOGO?</h2>
+    <p>Get high-quality, custom brand identities.</p>
+    <a href="https://t.me/ROCK_HEREE" class="dm-btn">DM ME ON TG</a>
+</section>
+
+<div id="lightbox">
+    <img id="lightbox-img" src="" alt="Enlarged Logo">
+</div>
+
+<script>
+    const portfolio = document.getElementById('portfolio');
+    const themeBtn = document.getElementById('theme-toggle');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    // Theme Switcher
+    themeBtn.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme');
+        document.body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // Generate 30 Boxes for 1.jpg to 30.jpg
+    for (let i = 1; i <= 30; i++) {
+        const fileName = `${i}.jpg`;
+        const box = document.createElement('div');
+        box.className = 'logo-box';
+        box.innerHTML = `<img src="${fileName}" alt="Logo ${i}" loading="lazy" onerror="this.src='https://via.placeholder.com/300/1e293b/38bdf8?text=${i}.jpg'">`;
+        
+        box.onclick = () => {
+            lightboxImg.src = fileName;
+            lightbox.style.display = 'flex';
+        };
+        
+        portfolio.appendChild(box);
+    }
+
+    // Close Lightbox
+    lightbox.onclick = () => { lightbox.style.display = 'none'; };
+</script>
+
+</body>
+</html>
