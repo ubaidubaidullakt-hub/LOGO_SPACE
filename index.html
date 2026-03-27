@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Showcase | 30 JPG Designs</title>
+    <style>
+        /* Theme Variables */
+        :root {
+            --bg: #ffffff;
+            --card: #f8fafc;
+            --text: #0f172a;
+            --accent: #38bdf8;
+            --border: #e2e8f0;
+            --overlay: rgba(0,0,0,0.85);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --accent: #38bdf8;
+            --border: #334155;
+            --overlay: rgba(0,0,0,0.95);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #theme-toggle {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        #theme-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 20px 40px;
+        }
+
+        h1 { font-size: 2.5rem; margin: 0; color: var(--accent); }
+        p { opacity: 0.7; margin-top: 10px; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .logo-box {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+            border: 1px solid var(--border);
+            cursor: zoom-in;
+            transition: transform 0.2s ease, border-color 0.2s;
+        }
+
+        .logo-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* Lightbox (Click to Enlarge) */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--overlay);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+            padding: 20px;
+        }
+
+        #lightbox img {
+            max-width: 95%;
+            max-height: 90%;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .github-btn {
+            text-decoration: none;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .github-btn:hover {
+            background: var(--accent);
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+<nav>
+    <button id="theme-toggle">🌓 Switch Theme</button>
+</nav>
+
+<header>
+    <h1>My Logo Designs</h1>
+    <p>A collection of 30 unique JPG logos. Click to view full size.</p>
+</header>
+
+<div class="container">
+    <div class="gallery" id="portfolio">
+        </div>
+</div>
+
+<div id="lightbox">
+    <img id="lightbox-img" src="" alt="Enlarged Logo">
+</div>
+
+<footer>
+    <a href="https://github.com/YOUR_USERNAME" class="github-btn">View Repository on GitHub</a>
+</footer>
+
+<script>
+    const portfolio = document.getElementById('portfolio');
+    const themeBtn = document.getElementById('theme-toggle');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    // 1. Theme Switcher Logic
+    themeBtn.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', newTheme);
+    });
+
+    // 2. Loop to generate 30 boxes for 1.jpg, 2.jpg... 30.jpg
+    const totalItems = 30;
+
+    for (let i = 1; i <= totalItems; i++) {
+        const fileName = `${i}.jpg`;
+        const box = document.createElement('div');
+        box.className = 'logo-box';
+        
+        // Image source set to .jpg
+        box.innerHTML = `
+            <img src="${fileName}" alt="Logo ${i}" loading="lazy" 
+                 onerror="this.src='https://via.placeholder.com/300/1e293b/38bdf8?text=Image+${i}.jpg+Missing'">
+        `;
+        
+        // Open Lightbox on click
+        box.onclick = () => {
+            lightboxImg.src = fileName;
+            lightbox.style.display = 'flex';
+        };
+        
+        portfolio.appendChild(box);
+    }
+
+    // 3. Close Lightbox on click anywhere
+    lightbox.onclick = () => {
+        lightbox.style.display = 'none';
+        lightboxImg.src = ''; // Clear source to stop loading
+    };
+</script>
+
+</body>
+</html>
